@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Information Form</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        label { display: block; margin: 10px 0 5px; }
+        input, textarea { margin-bottom: 15px; }
+        .section { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h2>User Information Form</h2>
+    
+    <div class="section">
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" name="firstName" required>
+        
+        <label for="fullName">Full Name:</label>
+        <input type="text" id="fullName" name="fullName" required>
+        
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" name="lastName" required>
+        
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" min="1" required>
+        
+        <label for="phone">Phone Number:</label>
+        <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" placeholder="1234567890" required>
+        
+        <label for="address">Address:</label>
+        <textarea id="address" name="address" rows="4" cols="50" required></textarea>
+    </div>
+
+    <div class="section">
+        <label>Resume:</label>
+        <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" required>
+    </div>
+
+    <div class="section">
+        <label>Hobbies:</label>
+        <input type="radio" id="reading" name="hobby" value="reading" required>
+        <label for="reading">Reading</label>
+        
+        <input type="radio" id="sports" name="hobby" value="sports">
+        <label for="sports">Sports</label>
+        
+        <input type="radio" id="music" name="hobby" value="music">
+        <label for="music">Music</label>
+        
+        <input type="radio" id="travel" name="hobby" value="travel">
+        <label for="travel">Traveling</label>
+    </div>
+
+    <div class="section">
+        <label>Favorite Subjects:</label>
+        <input type="radio" id="math" name="subject" value="math" required>
+        <label for="math">Mathematics</label>
+        
+        <input type="radio" id="science" name="subject" value="science">
+        <label for="science">Science</label>
+        
+        <input type="radio" id="history" name="subject" value="history">
+        <label for="history">History</label>
+        
+        <input type="radio" id="art" name="subject" value="art">
+        <label for="art">Art</label>
+    </div>
+
+    <input type="submit" value="Submit">
+</body>
+</html>

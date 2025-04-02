@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>form2</title>
+
+    <style>
+        form{
+            border:2px solid black;
+            width:400px;
+            margin :50px auto
+        }
+    </style>
+</head>
+<body>
+    <form action="" method="get">
+
+        <fieldset>
+            <legend>
+                <label for="name">name</label>
+                <input type="name" id="name" name="name"></label>
+                <br>
+                <label for="image"> upload imag</label>
+                <input type="file" name="image" id="image" accept="img/*">
+                
+            </legend>
+        </fieldset>
+
+        <fieldset>
+            <legend>Fav</legend>
+            <label for="color">Favorite color</label>
+            <input type="checkbox" id="red" name="red">
+            <label for="reed">Red</label>
+            <input type="checkbox" id="red" name="red">
+            <label for="reed">Red</label>
+            <input type="checkbox" id="red" name="red">
+            <label for="reed">Red</label>
+
+            <br>
+            <label for="">Fav food item</label>
+            <select nmae="item" id="item">
+
+                <option value="">Select food</option>
+
+                <option label="tiffins">
+                    <option value="idly"></option>
+                    <option value="dosa">Dosa</option>
+                </option>
+                <optgroup label="non-veg">
+                    <option value="chicken">Chicken</option>
+                    <OPTION VALUE="FRIEDRICE">FRIED RICE</OPTION>
+                </optgroup>
+            </select>
+
+            <
+        </fieldset>
+
+        <BR><br>
+            <label for="game">Favorite Game</label>
+            <input name="game" id="game" list="games">
+            <datalist id="games">
+                <option value="cricket"></option>
+                <option value="vollyball"></option>
+            </datalist>
+
+
+
+        <fieldset>
+            <legend>
+                <label for="email">Email</label>
+                <input type="emal" id="email" name="email"></label>
+                <br>
+                <label for="phone">phone</label>
+                <input type="tel" id="phone" name="phone" placeholder="enter your 10 digit number" pattern="[0-9]{10}">
+
+            </legend>
+        </fieldset>
+
+
+    </form>
+    
+</body>
+</html>
