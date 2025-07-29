@@ -33,7 +33,7 @@ const Navbar = ({ toggleDarkMode }) => {
       <ul className="nav-links">
         <li>Home</li>
         <li>Doctors</li>
-        <li>Medicine</li>
+        <li>Catalog</li>
         <li>About</li>
         <li>Contact</li>
       </ul>
@@ -205,17 +205,39 @@ function ScrollToTop() {
 }
 
 const Footer = () => (
-  <footer>
+  <footer className="footer">
     <div className="footer-content">
-      <p>&copy; 2025 PharmaCare — Your trusted pharmacy partner.</p>
-      <p>Reach us at <a href="mailto:support@pharmacare.com">support@pharmacare.com</a> | +91-999-888-7777</p>
-      <div className="socials">
-        <a href="/">Instagram</a>
-        <a href="/">Twitter</a>
-        <a href="/">LinkedIn</a>
+      <div className="footer-section">
+        <h3>PharmaCare</h3>
+        <p>Your trusted pharmacy partner for safe and fast delivery.</p>
       </div>
+
+      <div className="footer-section">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Doctors</a></li>
+          <li><a href="#">Medicines</a></li>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+
+      <div className="footer-section">
+        <h4>Contact</h4>
+        <p>Email: <a href="mailto:support@pharmacare.com">support@pharmacare.com</a></p>
+        <p>Phone: +91-999-888-7777</p>
+        <div className="socials">
+          <a href="#">Instagram</a> | <a href="#">Twitter</a> | <a href="#">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+
+    <div className="footer-bottom">
+      &copy; {new Date().getFullYear()} PharmaCare. All rights reserved.
     </div>
   </footer>
 );
+
 
 export default App;
