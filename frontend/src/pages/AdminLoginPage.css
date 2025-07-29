@@ -1,0 +1,108 @@
+/* Background */
+.admin-page-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(120deg, #e0f7fa, #b2dfdb);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Navbar */
+.navbar {
+  background-color: #00796b;
+  color: white;
+  padding: 15px 30px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  animation: slideDown 0.6s ease-out;
+}
+
+.navbar h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Login Box */
+.admin-login-container {
+  max-width: 400px;
+  margin: 80px auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.8s ease-out;
+}
+
+.admin-login-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #004d40;
+}
+
+.admin-login-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-login-container label {
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.admin-login-container input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 5px;
+  transition: all 0.3s ease-in-out;
+}
+
+.admin-login-container input:focus {
+  border-color: #26a69a;
+  box-shadow: 0 0 5px rgba(38, 166, 154, 0.5);
+  outline: none;
+}
+
+.admin-login-container button {
+  background-color: #00796b;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 10px;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.admin-login-container button:hover {
+  background-color: #004d40;
+  transform: scale(1.05);
+}
+
+.error {
+  color: red;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
