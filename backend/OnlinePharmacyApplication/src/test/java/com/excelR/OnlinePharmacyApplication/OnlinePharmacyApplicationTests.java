@@ -1,10 +1,10 @@
-package com.excelR.OnlinePharmacyBackend;
+package com.excelR.OnlinePharmacyApplication;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class OnlinePharmacyBackendApplicationTests {
+class OnlinePharmacyApplicationTests {
 
 	@Test
 	void contextLoads() {
