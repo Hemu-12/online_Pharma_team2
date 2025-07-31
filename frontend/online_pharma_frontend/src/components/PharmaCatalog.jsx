@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './PharmaCatalog.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -7,252 +7,189 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 const PharmaCatalog = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [modalData, setModalData] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState('All Medications');
-  const [sortOption, setSortOption] = useState('Popularity');
+    const [products, setProducts] = useState([]);
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('All Medication');
+    const [modalProduct, setModalProduct] = useState(null);
+    const [modalVisible, setModalVisible] = useState(false);
 
-  const categories = [
-    'All Medications',
-    'Pain Relief',
-    'Antibiotics',
-    'Diabetes',
-    'Heart Health',
-    'Allergies',
-    'Cold & Flu'
-  ];
+    useEffect(() => {
+        const productData = [
+            { name: 'Paracetamol', dosage: '500mg Tablets', description: 'Paracetamol', price: 20, stock: 'In Stock', image: '/images/paracetamol.jpg', category: 'Pain Relief' },
+            { name: 'Ibuprofen', dosage: '200mg Tablets', description: 'Ibuprofen', price: 30, stock: 'In Stock', image: '/images/Ibuprofen.jpg', category: 'Pain Relief' },
+            { name: 'Aspirin', dosage: '300mg Tablets', description: 'Aspirin', price: 25, stock: 'In Stock', image: '/images/Aspirin.jpg', category: 'Pain Relief' },
+            { name: 'Naproxen', dosage: '250mg Tablets', description: 'Naproxen', price: 40, stock: 'In Stock', image: '/images/Naproxen.jpg', category: 'Pain Relief' },
 
-    const drugs = [
-    // Pain Relief
-    { name: 'Paracetamol', dosage: '500mg Tablets', description: 'Paracetamol', price: '₹20', stock: 'In Stock', image: '/images/paracetamol.jpg', category: 'Pain Relief' },
-    { name: 'Ibuprofen', dosage: '200mg Tablets', description: 'Ibuprofen', price: '₹30', stock: 'In Stock', image: '/images/Ibuprofen.jpg', category: 'Pain Relief' },
-    { name: 'Aspirin', dosage: '300mg Tablets', description: 'Aspirin', price: '₹25', stock: 'In Stock', image: '/images/Aspirin.jpg', category: 'Pain Relief' },
-    { name: 'Naproxen', dosage: '250mg Tablets', description: 'Naproxen', price: '₹40', stock: 'In Stock', image: '/images/Naproxen.jpg', category: 'Pain Relief' },
+            { name: 'Amoxicillin', dosage: '500mg Capsules', description: 'Amoxicillin', price: 60, stock: 'In Stock', image: '/images/amoxicillin.jpg', category: 'Antibiotics' },
+            { name: 'Ciprofloxacin', dosage: '500mg Tablets', description: 'Ciprofloxacin', price: 55, stock: 'In Stock', image: '/images/Ciprofloxacin.jpg', category: 'Antibiotics' },
+            { name: 'Doxycycline', dosage: '100mg Capsules', description: 'Doxycycline', price: 50, stock: 'In Stock', image: '/images/Doxycycline.jpg', category: 'Antibiotics' },
+            { name: 'Azithromycin', dosage: '250mg Tablets', description: 'Azithromycin', price: 65, stock: 'In Stock', image: '/images/Azithromycin.jpg', category: 'Antibiotics' },
 
-    // Antibiotics
-    { name: 'Amoxicillin', dosage: '500mg Capsules', description: 'Amoxicillin', price: '₹60', stock: 'In Stock', image: '/images/amoxicillin.jpg', category: 'Antibiotics' },
-    { name: 'Ciprofloxacin', dosage: '500mg Tablets', description: 'Ciprofloxacin', price: '₹55', stock: 'In Stock', image: '/images/Ciprofloxacin.jpg', category: 'Antibiotics' },
-    { name: 'Doxycycline', dosage: '100mg Capsules', description: 'Doxycycline', price: '₹50', stock: 'In Stock', image: '/images/Doxycycline.jpg', category: 'Antibiotics' },
-    { name: 'Azithromycin', dosage: '250mg Tablets', description: 'Azithromycin', price: '₹65', stock: 'In Stock', image: '/images/Azithromycin.jpg', category: 'Antibiotics' },
+            { name: 'Metformin', dosage: '500mg Tablets', description: 'Metformin', price: 60, stock: 'In Stock', image: '/images/Metformin.jpg', category: 'Diabetes' },
+            { name: 'Glipizide', dosage: '5mg Tablets', description: 'Glipizide', price: 75, stock: 'In Stock', image: '/images/Glipizide.jpg', category: 'Diabetes' },
+            { name: 'Insulin', dosage: '100 IU/ml Injection', description: 'Insulin', price: 150, stock: 'In Stock', image: '/images/Insulin.jpg', category: 'Diabetes' },
+            { name: 'Glyburide', dosage: '2.5mg Tablets', description: 'Glyburide', price: 50, stock: 'In Stock', image: '/images/Glyburide.jpg', category: 'Diabetes' },
 
-    // Diabetes
-    { name: 'Metformin', dosage: '500mg Tablets', description: 'Metformin', price: '₹60', stock: 'In Stock', image: '/images/Metformin.jpg', category: 'Diabetes' },
-    { name: 'Glipizide', dosage: '5mg Tablets', description: 'Glipizide', price: '₹75', stock: 'In Stock', image: '/images/Glipizide.jpg', category: 'Diabetes' },
-    { name: 'Insulin', dosage: '100 IU/ml Injection', description: 'Insulin', price: '₹150', stock: 'In Stock', image: '/images/Insulin.jpg', category: 'Diabetes' },
-    { name: 'Glyburide', dosage: '2.5mg Tablets', description: 'Glyburide', price: '₹50', stock: 'In Stock', image: '/images/Glyburide.jpg', category: 'Diabetes' },
+            { name: 'Atenolol', dosage: '50mg Tablets', description: 'Atenolol', price: 70, stock: 'In Stock', image: '/images/Atenolol.jpg', category: 'Heart Health' },
+            { name: 'Lisinopril', dosage: '10mg Tablets', description: 'Lisinopril', price: 65, stock: 'In Stock', image: '/images/Lisinopril.jpg', category: 'Heart Health' },
+            { name: 'Atorvastatin', dosage: '10mg Tablets', description: 'Atorvastatin', price: 85, stock: 'In Stock', image: '/images/Atorvastatin.jpg', category: 'Heart Health' },
+            { name: 'Clopidogrel', dosage: '75mg Tablets', description: 'Clopidogrel', price: 95, stock: 'In Stock', image: '/images/Clopidogrel.jpg', category: 'Heart Health' },
 
-    // Heart Health
-    { name: 'Atenolol', dosage: '50mg Tablets', description: 'Atenolol', price: '₹70', stock: 'In Stock', image: '/images/Atenolol.jpg', category: 'Heart Health' },
-    { name: 'Lisinopril', dosage: '10mg Tablets', description: 'Lisinopril', price: '₹65', stock: 'In Stock', image: '/images/Lisinopril.jpg', category: 'Heart Health' },
-    { name: 'Atorvastatin', dosage: '10mg Tablets', description: 'Atorvastatin', price: '₹85', stock: 'In Stock', image: '/images/Atorvastatin.jpg', category: 'Heart Health' },
-    { name: 'Clopidogrel', dosage: '75mg Tablets', description: 'Clopidogrel', price: '₹95', stock: 'In Stock', image: '/images/Clopidogrel.jpg', category: 'Heart Health' },
+            { name: 'Cetirizine', dosage: '10mg Tablets', description: 'Cetirizine', price: 30, stock: 'In Stock', image: '/images/Cetirizine.jpg', category: 'Allergies' },
+            { name: 'Loratadine', dosage: '10mg Tablets', description: 'Loratadine', price: 35, stock: 'In Stock', image: '/images/Loratadine.jpg', category: 'Allergies' },
+            { name: 'Fexofenadine', dosage: '120mg Tablets', description: 'Fexofenadine', price: 40, stock: 'In Stock', image: '/images/Fexofenadine.jpg', category: 'Allergies' },
+            { name: 'Diphenhydramine', dosage: '25mg Tablets', description: 'Diphenhydramine', price: 28, stock: 'In Stock', image: '/images/Diphenhydramine.jpg', category: 'Allergies' },
 
-    // Allergies
-    { name: 'Cetirizine', dosage: '10mg Tablets', description: 'Cetirizine', price: '₹30', stock: 'In Stock', image: '/images/Cetirizine.jpg', category: 'Allergies' },
-    { name: 'Loratadine', dosage: '10mg Tablets', description: 'Loratadine', price: '₹35', stock: 'In Stock', image: '/images/Loratadine.jpg', category: 'Allergies' },
-    { name: 'Fexofenadine', dosage: '120mg Tablets', description: 'Fexofenadine', price: '₹40', stock: 'In Stock', image: '/images/Fexofenadine.jpg', category: 'Allergies' },
-    { name: 'Diphenhydramine', dosage: '25mg Tablets', description: 'Diphenhydramine', price: '₹28', stock: 'In Stock', image: '/images/Diphenhydramine.jpg', category: 'Allergies' },
+            { name: 'Phenylephrine', dosage: '10mg Tablets', description: 'Phenylephrine', price: 22, stock: 'In Stock', image: '/images/Phenylephrine.jpg', category: 'Cold & Flu' },
+            { name: 'Chlorpheniramine', dosage: '4mg Tablets', description: 'Chlorpheniramine', price: 25, stock: 'In Stock', image: '/images/Chlorpheniramine.jpg', category: 'Cold & Flu' },
+            { name: 'Guaifenesin', dosage: '100mg Tablets', description: 'Guaifenesin', price: 33, stock: 'In Stock', image: '/images/Guaifenesin.jpg', category: 'Cold & Flu' },
+            { name: 'Dextromethorphan', dosage: '15mg Tablets', description: 'Dextromethorphan', price: 29, stock: 'In Stock', image: '/images/Dextromethorphan.jpg', category: 'Cold & Flu' },
+        ];
 
-    // Cold & Flu
-    { name: 'Phenylephrine', dosage: '10mg Tablets', description: 'Phenylephrine', price: '₹22', stock: 'In Stock', image: '/images/Phenylephrine.jpg', category: 'Cold & Flu' },
-    { name: 'Chlorpheniramine', dosage: '4mg Tablets', description: 'Chlorpheniramine', price: '₹25', stock: 'In Stock', image: '/images/Chlorpheniramine.jpg', category: 'Cold & Flu' },
-    { name: 'Guaifenesin', dosage: '100mg Tablets', description: 'Guaifenesin', price: '₹33', stock: 'In Stock', image: '/images/Guaifenesin.jpg', category: 'Cold & Flu' },
-    { name: 'Dextromethorphan', dosage: '15mg Tablets', description: 'Dextromethorphan', price: '₹29', stock: 'In Stock', image: '/images/Dextromethorphan.jpg', category: 'Cold & Flu' },
-];
-  const handleSearch = (e) => setSearchTerm(e.target.value);
+        const withIdAndPricing = productData.map((p, index) => ({
+            ...p,
+            id: index + 1,
+            originalPrice: (p.price * 1.2).toFixed(2)
+        }));
 
-  const openModal = (drug) => {
-    setModalData(drug);
-    setIsModalOpen(true);
-  };
+        setProducts(withIdAndPricing);
+        setFilteredProducts(withIdAndPricing);
+    }, []);
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setModalData(null);
-  };
+    useEffect(() => {
+        if (products.length > 0) {
+            filterProducts();
+        }
+    }, [searchTerm, selectedCategory, products]);
 
-  const sortedDrugs = [...drugs]
-    .filter(drug =>
-      (selectedCategory === 'All Medications' || drug.category === selectedCategory) &&
-      drug.name.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    .sort((a, b) => {
-      if (sortOption === 'Price (Low to High)') {
-        return parseFloat(a.price.replace('₹', '')) - parseFloat(b.price.replace('₹', ''));
-      } else if (sortOption === 'Price (High to Low)') {
-        return parseFloat(b.price.replace('₹', '')) - parseFloat(a.price.replace('₹', ''));
-      } else if (sortOption === 'Alphabetical (A-Z)') {
-        return a.name.localeCompare(b.name);
-      }
-      return 0;
-    });
+    const filterProducts = () => {
+        const filtered = products.filter(product => {
+            const matchesSearch =
+                product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                product.category.toLowerCase().includes(searchTerm.toLowerCase());
 
+            const matchesCategory =
+                selectedCategory === 'All Medication' || product.category === selectedCategory;
 
+            return matchesSearch && matchesCategory;
+        });
+
+        setFilteredProducts(filtered);
+    };
+
+    const showProductDetails = (product) => {
+        setModalProduct(product);
+        setModalVisible(true);
+    };
+
+    const closeModal = () => {
+        setModalVisible(false);
+    };
+
+    const uniqueCategories = ['All Medication', ...Array.from(new Set(products.map(p => p.category)))];
+
+    const categoryImages = {
+        "All Medication": "/images/capsule.jpg",
+        "Pain Relief": "/images/pain-relief.jpg",
+        "Antibiotics": "/images/antibiotics.jpg",
+        "Diabetes": "/images/diabetes.jpg",
+        "Heart Health": "/images/heart-health.jpg",
+        "Allergies": "/images/allergies.jpg",
+        "Cold & Flu": "/images/cold-flu.jpg"
+    };
 
     return (
-        <div className="catalog-container">
-            <header className="header">
-                <div className="header-content">
-                    <div className="logo-area">
-                        
-                        <h1 className="brand-title">Pharma<span className="highlight">Care</span></h1>
+        <div className="pharmacatalog-bg">
+            {/* Navbar */}
+            <nav className="pharmacatalog-navbar">
+                <div className="pharmacatalog-navbar-container">
+                    <div className="pharmacatalog-navbar-logo">
+                        <h1 className="pharmacatalog-brand-title">Pharma<span className="pharmacatalog-highlight">Care</span></h1>
                     </div>
-                    <div className="search-login">
-  <div className="search-box-wrapper">
-    <input
-      type="text"
-      placeholder="Search medications..."
-      className="search-box"
-      value={searchTerm}
-      onChange={handleSearch}
-    />
-    <FontAwesomeIcon icon={faSearch} className="search-icon" />
-  </div>
-  <a href="/" className="home-link">Home</a>
-</div>
-
+                    <div className="pharmacatalog-navbar-links">
+                        <a href="#home">Home</a>
+                        <a href="#products">Products</a>
+                        <a href="#categories">Categories</a>
+                        <a href="#about">About</a>
+                    </div>
+                    <div className="pharmacatalog-navbar-search">
+                        <input type="text" placeholder="Search medicines..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+                    </div>
                 </div>
-            </header>
+            </nav>
 
-           <section className="hero-section">
-    <div className="hero-content">
-        <h2>Your Trusted Pharmaceutical Partner</h2>
-        <p>Discover our extensive catalog of FDA-approved medications with complete information and safety details</p>
-        <img src="/images/medical.jpg" alt="Pharmacist organizing medication" className="hero-image" />
-    </div>
-</section>
+            {/* Hero */}
+            <section id="home" className="pharmacatalog-hero-section">
+                <div className="pharmacatalog-hero-content">
+                    <h1>Your Health, Our Priority</h1>
+                    <p>Get genuine medicines delivered to your doorstep. Trusted by thousands of customers nationwide.</p>
+                    <div className="pharmacatalog-hero-buttons">
+                        <button onClick={() => document.getElementById('products').scrollIntoView({ behavior: 'smooth' })}>Shop Now</button>
+                        <button>Learn More</button>
+                    </div>
+                </div>
+                <div className="pharmacatalog-hero-image">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/3dd35b2d-b0d9-4b2e-9d58-9beacabf43bc.png" alt="Happy diverse group of people holding medicine packages" />
+                </div>
+            </section>
 
-
-            <main className="main-content">
-                <div className="categories">
-                    {categories.map(category => (
-                        <button
+            {/* Categories */}
+            <section id="categories" className="pharmacatalog-categories-section">
+                <h2>Shop by Category</h2>
+                <p>Find the medicines you need quickly by browsing our categories</p>
+                <div className="pharmacatalog-categories">
+                    {uniqueCategories.map(category => (
+                        <div
                             key={category}
-                            className={`category ${selectedCategory === category ? 'active' : ''}`}
+                            className={`pharmacatalog-category-card ${selectedCategory === category ? 'pharmacatalog-category-active' : ''}`}
                             onClick={() => setSelectedCategory(category)}
                         >
-                            {category}
-                        </button>
+                            <img
+                                src={categoryImages[category] || "/images/categories/default.jpg"}
+                                alt={category}
+                                className="pharmacatalog-category-image"
+                            />
+                            <span>{category}</span>
+                        </div>
                     ))}
                 </div>
+            </section>
 
-                <div className="sort-bar">
-  <h3>Featured Medications</h3>
-  <div className="sort-options">
-    <label>Sort by:</label>
-    <select
-      value={sortOption}
-      onChange={(e) => setSortOption(e.target.value)}
-    >
-      <option>Popularity</option>
-      <option>Price (Low to High)</option>
-      <option>Price (High to Low)</option>
-      <option>Alphabetical (A-Z)</option>
-    </select>
-  </div>
-</div>
-
-
-<div className="drug-grid">
-  {sortedDrugs.filter(drug =>
-      (selectedCategory === 'All Medications' || drug.category === selectedCategory) &&
-      drug.name.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    .map((drug, index) => (
-      <div key={index} className="drug-card">
-        <div className="drug-image">
-          <img src={drug.image} alt={drug.name} />
-        </div>
-        <div className="drug-info">
-          <div className="drug-header">
-            <div>
-              <h4>{drug.name}</h4>
-              <p>{drug.dosage}</p>
-            </div>
-            <span className={`stock ${drug.stock === 'In Stock' ? 'in' : 'low'}`}>{drug.stock}</span>
-          </div>
-          <p className="drug-description">{drug.description}</p>
-          <div className="drug-footer">
-  <span className="price">{drug.price}</span>
-  <button className="view-btn">View</button>
-</div>
-
-        </div>
-      </div>
-    ))}
-</div>
-
-
-                {/*isModalOpen && modalData && (
-                    <div className="modal-overlay">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <div>
-                                    <h3>{modalData.name}</h3>
-                                    <p>{modalData.dosage}</p>
-                                </div>
-                                <button className="close-btn" onClick={closeModal}>
-                                    <FontAwesomeIcon icon={faTimes} />
-                                </button>
+            {/* Products */}
+            <section id="products" className="pharmacatalog-products-section">
+                <h2>Our Top Products</h2>
+                <p>High-quality medicines for all your health needs</p>
+                <div className="pharmacatalog-products-container">
+                    {filteredProducts.map(product => (
+                        <div key={product.id} className="pharmacatalog-product-card">
+                            <img src={product.image} alt={product.name} />
+                            <h3>{product.name}</h3>
+                            <p>{product.description}</p>
+                            <p className="pharmacatalog-dosage">{product.dosage}</p>
+                            <div className="pharmacatalog-product-info">
+                                <span>₹{product.price}</span>
+                                <span className="pharmacatalog-original-price">₹{product.originalPrice}</span>
+                                <span>{product.stock}</span>
                             </div>
-                            <div className="modal-body">
-                                <div className="modal-image">
-                                    <img src={modalData.image} alt={modalData.name} />
-                                </div>
-                                <div className="modal-details">
-                                    <div className="price-stock">
-                                        <span className="modal-price">{modalData.price}</span>
-                                        <span className={`stock ${modalData.stock === 'In Stock' ? 'in' : 'low'}`}>{modalData.stock}</span>
-                                    </div>
-                                    <div className="modal-actions">
-                                        <select>
-                                            {[1, 2, 3, 4, 5].map(num => (
-                                                <option key={num}>{num}</option>
-                                            ))}
-                                        </select>
-                                        <button className="add-cart-btn">Add to Cart</button>
-                                    </div>
-
-                                    <div className="modal-info-block">
-                                        <h4>Description</h4>
-                                        <p>{modalData.description}</p>
-                                    </div>
-                                    <div className="modal-info-block">
-                                        <h4>Dosage</h4>
-                                        <p>Adults: 1-2 tablets every 4-6 hours as needed. Do not exceed 6 tablets in 24 hours.</p>
-                                    </div>
-                                    <div className="modal-info-block">
-                                        <h4>Side Effects</h4>
-                                        <p>May cause upset stomach, nausea, dizziness, etc. Seek medical help if symptoms worsen.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="modal-extra">
-                                <h4>Complete Information</h4>
-                                <div className="info-grid">
-                                    <div><span>Generic Name:</span><span>{modalData.name}</span></div>
-                                    <div><span>Brand Name:</span><span>Advil, Motrin</span></div>
-                                    <div><span>Drug Class:</span><span>NSAID</span></div>
-                                    <div><span>Pregnancy Category:</span><span>C</span></div>
-                                    <div><span>Manufacturer:</span><span>Pfizer Inc.</span></div>
-                                </div>
-                            </div>
+                            <button onClick={() => showProductDetails(product)}>View Details</button>
                         </div>
-                    </div>
-                )*/}
-            </main>
+                    ))}
+                </div>
+                <button className="pharmacatalog-view-all">View All Products</button>
+            </section>
 
-            <footer className="footer">
-                <div className="footer-content">
-                    <div className="footer-col">
-                        <div className="logo-area">
-                            <h3>Pharma<span className="highlight">Care</span></h3>
+            {/* Footer */}
+            <footer className="pharmacatalog-footer">
+                <div className="pharmacatalog-footer-content">
+                    <div className="pharmacatalog-footer-col">
+                        <div className="pharmacatalog-logo-area">
+                            <h1 className="pharmacatalog-brand-title">Pharma<span className="pharmacatalog-highlight">Care</span></h1>
                         </div>
                         <p>Your trusted partner for pharmaceutical needs. Providing quality medications with care since 2010.</p>
                     </div>
-                    <div className="footer-col">
+                    <div className="pharmacatalog-footer-col">
                         <h4>Quick Links</h4>
                         <ul>
                             <li>Home</li>
@@ -261,7 +198,7 @@ const PharmaCatalog = () => {
                             <li>Health Blog</li>
                         </ul>
                     </div>
-                    <div className="footer-col">
+                    <div className="pharmacatalog-footer-col">
                         <h4>Information</h4>
                         <ul>
                             <li>About Us</li>
@@ -270,7 +207,7 @@ const PharmaCatalog = () => {
                             <li>Shipping Policy</li>
                         </ul>
                     </div>
-                    <div className="footer-col">
+                    <div className="pharmacatalog-footer-col">
                         <h4>Contact Us</h4>
                         <ul>
                             <li><FontAwesomeIcon icon={faShieldAlt} /> 123 Medical Ave</li>
@@ -279,7 +216,7 @@ const PharmaCatalog = () => {
                         </ul>
                     </div>
                 </div>
-                <div className="footer-bottom">
+                <div className="pharmacatalog-footer-bottom">
                     <p>© 2023 PharmaCare. All rights reserved.</p>
                 </div>
             </footer>
