@@ -1,13 +1,21 @@
 package com.excelR.OnlinePharmacyApplication.controller;
 
-import com.excelR.OnlinePharmacyApplication.entity.User;
-import com.excelR.OnlinePharmacyApplication.service.UserService;
 import com.excelR.OnlinePharmacyApplication.config.JwtUtil;
+import com.excelR.OnlinePharmacyApplication.dto.LoginRequest;
+import com.excelR.OnlinePharmacyApplication.entity.User;
+import static com.excelR.OnlinePharmacyApplication.exception.CustomExceptions.*;
+import com.excelR.OnlinePharmacyApplication.service.UserService;
+
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -21,17 +29,33 @@ public class AuthController {
 
     @Autowired
     private UserService userService;
-//http://localhost:8080/api/auth/register
+
     @PostMapping("/register")
     public User register(@RequestBody User user) {
         return userService.registerUser(user);
     }
-//http://localhost:8080/api/auth/login
+
     @PostMapping("/login")
-    public String login(@RequestBody User user) {
+    public ResponseEntity<?> login(@RequestBody @Valid LoginRequest loginRequest) {
+        User existingUser = userService.getUserByUsername(loginRequest.getUsername());
+        if (!existingUser.isApproved()) {
+            throw new UserNotApprovedException("Your account is not approved yet. Please contact the administrator.");
+        }
+
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
+            new UsernamePasswordAuthenticationToken(
+                loginRequest.getUsername(),
+                loginRequest.getPassword()
+            )
         );
-        return jwtUtil.generateToken(authentication.getName());
+
+        String token = jwtUtil.generateToken(existingUser.getUsername(), existingUser.getRole());
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("token", token);
+        response.put("username", existingUser.getUsername());
+        response.put("role", existingUser.getRole());
+
+        return ResponseEntity.ok(response);
     }
 }

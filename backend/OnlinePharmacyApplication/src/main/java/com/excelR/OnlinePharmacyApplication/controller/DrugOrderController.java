@@ -1,26 +1,30 @@
 package com.excelR.OnlinePharmacyApplication.controller;
 
-import com.excelR.OnlinePharmacyApplication.entity.Drug;
-import com.excelR.OnlinePharmacyApplication.service.DrugService;
+import com.excelR.OnlinePharmacyApplication.entity.Order;
+import com.excelR.OnlinePharmacyApplication.dto.OrderResponseDto;
+import com.excelR.OnlinePharmacyApplication.service.OrderService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/drugs")
-public class DrugController {
+@RequestMapping("/api/orders")
+@PreAuthorize("hasRole('USER')")
+public class DrugOrderController {
 
     @Autowired
-    private DrugService drugService;
+    private OrderService orderService;
 
-    @GetMapping
-    public List<Drug> getAllDrugs() {
-        return drugService.getAllDrugs();
+    @PostMapping("/place")
+    public OrderResponseDto placeOrder(@RequestBody Order order) {
+        return orderService.placeOrder(order);
     }
 
-    @GetMapping("/{id}")
-    public Drug getDrugById(@PathVariable Long id) {
-        return drugService.getDrugById(id);
+    @GetMapping("/user/{userId}")
+    public List<Order> getUserOrders(@PathVariable Long userId) {
+        return orderService.getOrdersByUser(userId);
     }
 }
