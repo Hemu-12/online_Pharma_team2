@@ -13,6 +13,7 @@ public class Order {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     private double totalPrice;
@@ -22,7 +23,6 @@ public class Order {
     @OneToMany(cascade = CascadeType.ALL)
     private List<OrderItem> items = new ArrayList<>();
 
-    // Getters and setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

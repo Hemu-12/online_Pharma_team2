@@ -1,10 +1,12 @@
 package com.excelR.OnlinePharmacyApplication.entity;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "users")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -12,16 +14,28 @@ public class User {
     @Column(unique = true, nullable = false)
     private String username;
 
+    @JsonIgnore
     private String password;
+
     private String email;
     private String mobile;
 
-    // Required fields for your service
-    private String role;      // "USER" or "ADMIN"
-    private boolean approved; // Admin approval needed
+    @JsonIgnore
+    private String role;
+
+    @JsonIgnore
+    private boolean approved;
+
+    @JsonIgnore
     private boolean enabled = true;
 
-    // Getters and setters
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name = "address")
+    private String address;
+
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -45,4 +59,26 @@ public class User {
 
     public boolean isEnabled() { return enabled; }
     public void setEnabled(boolean enabled) { this.enabled = enabled; }
+
+    public String getPhone() { return phone; }
+    public void setPhone(String phone) { this.phone = phone; }
+
+    public String getAddress() { return address; }
+    public void setAddress(String address) { this.address = address; }
+	public void setContact(String contact) {
+		// TODO Auto-generated method stub
+		
+	}
+	public String getContact() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public void setPhone(Object phone2) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void setAddress(Object address2) {
+		// TODO Auto-generated method stub
+		
+	}
 }

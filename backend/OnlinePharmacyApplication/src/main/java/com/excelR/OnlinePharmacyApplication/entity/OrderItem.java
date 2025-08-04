@@ -15,7 +15,6 @@ public class OrderItem {
     private int quantity;
     private double price;
 
-    // Getters and setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

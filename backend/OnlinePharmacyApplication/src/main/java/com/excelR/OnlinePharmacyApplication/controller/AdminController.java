@@ -4,13 +4,16 @@ import com.excelR.OnlinePharmacyApplication.entity.User;
 import com.excelR.OnlinePharmacyApplication.entity.Drug;
 import com.excelR.OnlinePharmacyApplication.service.UserService;
 import com.excelR.OnlinePharmacyApplication.service.DrugService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
+@PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
 
     @Autowired
@@ -32,6 +35,16 @@ public class AdminController {
     @PutMapping("/users/disable/{id}")
     public void disableUser(@PathVariable Long id) {
         userService.disableUser(id);
+    }
+
+    @PutMapping("/users/{id}")
+    public User updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
+        return userService.updateUser(id, updatedUser);
+    }
+
+    @DeleteMapping("/users/{id}")
+    public void deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
     }
 
     @PostMapping("/drugs")
