@@ -9,8 +9,6 @@ import com.excelR.OnlinePharmacyApplication.service.DrugService;
 import com.excelR.OnlinePharmacyApplication.service.UserService;
 import com.excelR.OnlinePharmacyApplication.service.UserAccessService;
 
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,27 +17,46 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
-@PreAuthorize("hasAnyRole('USER','ADMIN')")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final DrugService drugService;
+    private final UserAccessService userAccessService;
 
-    @Autowired
-    private DrugService drugService;
+    public UserController(UserService userService,
+                          DrugService drugService,
+                          UserAccessService userAccessService) {
+        this.userService = userService;
+        this.drugService = drugService;
+        this.userAccessService = userAccessService;
+    }
 
-    @Autowired
-    private UserAccessService userAccessService;
+    // ------------------- LOGIN (PUBLIC) -------------------
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        try {
+            String token = userAccessService.login(loginRequest);
+            return ResponseEntity.ok(Map.of("token", token));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Invalid username or password");
+        }
+    }
 
+    // ------------------- UPDATE PROFILE (SECURED) -------------------
     @PutMapping("/update")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public User updateProfile(@RequestBody User user) {
         return userService.registerUser(user);
     }
 
+    // ------------------- GET USER PROFILE (SECURED) -------------------
     @GetMapping("/profile")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<?> getUserProfile(@AuthenticationPrincipal UserDetails userDetails) {
         if (userDetails == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized or missing token");
@@ -49,7 +66,9 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    // ------------------- UPDATE USER BY ADMIN (SECURED) -------------------
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<String> updateMemberDetails(@AuthenticationPrincipal UserDetails currentUser,
                                                       @PathVariable Long id,
                                                       @RequestBody UserUpdateRequest request) {
@@ -61,7 +80,9 @@ public class UserController {
         }
     }
 
+    // ------------------- VIEW ALL DRUGS (SECURED) -------------------
     @GetMapping("/drugs")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<List<Drug>> getAllDrugs() {
         List<Drug> drugs = drugService.getAllDrugs();
         if (drugs.isEmpty()) {
@@ -70,7 +91,9 @@ public class UserController {
         return ResponseEntity.ok(drugs);
     }
 
+    // ------------------- SEARCH DRUGS (SECURED) -------------------
     @GetMapping("/drugs/search")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<List<Drug>> searchDrugs(@RequestParam(required = false) String name,
                                                   @RequestParam(defaultValue = "0") int page,
                                                   @RequestParam(defaultValue = "10") int size) {
@@ -84,7 +107,9 @@ public class UserController {
         return ResponseEntity.ok(results);
     }
 
+    // ------------------- GET DRUG BY ID (SECURED) -------------------
     @GetMapping("/drugs/{id}")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<DrugDto> getDrugById(@PathVariable Long id) {
         Drug drug = drugService.getDrugById(id);
         DrugDto dto = new DrugDto(drug.getId(), drug.getName(), drug.getDescription(), drug.getQuantity(), drug.getPrice());

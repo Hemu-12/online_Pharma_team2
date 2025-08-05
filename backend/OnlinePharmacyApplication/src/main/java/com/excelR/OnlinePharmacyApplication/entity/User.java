@@ -2,6 +2,8 @@ package com.excelR.OnlinePharmacyApplication.entity;
 
 import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -14,7 +16,8 @@ public class User {
     @Column(unique = true, nullable = false)
     private String username;
 
-    @JsonIgnore
+    // Allow password to be provided in requests but never exposed in responses
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     private String email;
@@ -32,10 +35,11 @@ public class User {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "address")
-    private String address;
+    // One-to-Many relationship with Address
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Address> addresses;
 
-
+    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -63,22 +67,6 @@ public class User {
     public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }
 
-    public String getAddress() { return address; }
-    public void setAddress(String address) { this.address = address; }
-	public void setContact(String contact) {
-		// TODO Auto-generated method stub
-		
-	}
-	public String getContact() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	public void setPhone(Object phone2) {
-		// TODO Auto-generated method stub
-		
-	}
-	public void setAddress(Object address2) {
-		// TODO Auto-generated method stub
-		
-	}
+    public List<Address> getAddresses() { return addresses; }
+    public void setAddresses(List<Address> addresses) { this.addresses = addresses; }
 }

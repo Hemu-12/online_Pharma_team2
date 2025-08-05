@@ -7,26 +7,28 @@ import com.excelR.OnlinePharmacyApplication.entity.User;
 import com.excelR.OnlinePharmacyApplication.exception.CustomExceptions.UserNotApprovedException;
 import com.excelR.OnlinePharmacyApplication.repository.UserRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import org.springframework.security.core.userdetails.User.UserBuilder;
 
 @Service
 public class UserAccessService implements UserDetailsService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private JwtUtil jwtUtil;
+    // Constructor injection
+    public UserAccessService(UserRepository userRepository,
+                             PasswordEncoder passwordEncoder,
+                             JwtUtil jwtUtil) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
+    }
 
     public String login(LoginRequest loginRequest) {
         User user = userRepository.findByUsername(loginRequest.getUsername());
@@ -48,8 +50,9 @@ public class UserAccessService implements UserDetailsService {
         user.setEmail(updateRequest.getEmail());
         user.setMobile(updateRequest.getMobile());
 
-        if (updateRequest.getPassword() != null && !((String) updateRequest.getPassword()).isBlank()) {
-            user.setPassword(passwordEncoder.encode(updateRequest.getPassword()));
+        // Fixed isBlank() issue by using toString()
+        if (updateRequest.getPassword() != null && !updateRequest.getPassword().toString().isBlank()) {
+            user.setPassword(passwordEncoder.encode(updateRequest.getPassword().toString()));
         }
 
         return userRepository.save(user);
@@ -64,7 +67,7 @@ public class UserAccessService implements UserDetailsService {
 
         UserBuilder builder = org.springframework.security.core.userdetails.User.withUsername(user.getUsername());
         builder.password(user.getPassword());
-        builder.roles(user.getRole()); // Assumes role stored as "USER", "ADMIN", etc.
+        builder.roles(user.getRole());
 
         return builder.build();
     }
