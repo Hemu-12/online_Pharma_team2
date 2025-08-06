@@ -1,4 +1,3 @@
-// src/App.jsx
 import { useState } from 'react'
 import './App.css'
 
@@ -306,8 +305,17 @@ function App() {
   return (
     <div className="app-container">
       <header className="header">
-        <h1>PharmaCare</h1>
+        <h1 className="brand">
+          <span style={{ color: '#2563eb', fontWeight: 'bold' }}>Pharma</span>
+          <span style={{ color: '#16a34a', fontWeight: 'bold' }}>Care</span>
+        </h1>
+        <nav className="nav-links">
+          <button className="home-button" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          Home
+          </button>
+        </nav>
       </header>
+
 
       <div className="main-content">
         {/* Drug catalog */}
