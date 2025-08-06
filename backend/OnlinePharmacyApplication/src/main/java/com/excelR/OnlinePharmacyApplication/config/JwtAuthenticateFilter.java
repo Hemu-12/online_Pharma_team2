@@ -5,30 +5,28 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import com.excelR.OnlinePharmacyApplication.service.UserAccessService;
 
 import java.io.IOException;
 import java.util.List;
 
-@Component
+import com.excelR.OnlinePharmacyApplication.service.UserAccessService;
+
 public class JwtAuthenticateFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
+    private final UserAccessService userAccessService;
 
-    @Autowired
-    private UserAccessService userAccessService;
+    // Constructor injection to avoid autowiring loops
+    public JwtAuthenticateFilter(JwtUtil jwtUtil, UserAccessService userAccessService) {
+        this.jwtUtil = jwtUtil;
+        this.userAccessService = userAccessService;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -46,7 +44,7 @@ public class JwtAuthenticateFilter extends OncePerRequestFilter {
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userAccessService.loadUserByUsername(username); 
+            UserDetails userDetails = userAccessService.loadUserByUsername(username);
 
             if (jwtUtil.validateToken(jwtToken, userDetails)) {
                 String role = jwtUtil.extractRole(jwtToken);
