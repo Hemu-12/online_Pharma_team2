@@ -209,6 +209,7 @@ const showProductDetails = (product) => {
                             <li>Privacy Policy</li>
                             <li>Terms of Service</li>
                             <li>Shipping Policy</li>
+                            
                         </ul>
                     </div>
                     <div className="pharmacatalog-footer-col">
