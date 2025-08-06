@@ -41,7 +41,7 @@ function DrugForm() {
   return (
     <>
       <nav className="navbar-drug">
-        <div className="navbar-logo">Pharmacy</div>
+        <div className="navbar-logo">PharmaCare</div>
       </nav>
 
       <div className="create-drug-form-container">

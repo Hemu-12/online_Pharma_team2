@@ -35,7 +35,7 @@ const AdminLoginPage = () => {
   return (
     <div className="admin-page-wrapper">
       <nav className="navbar">
-        <h1>Pharmacy</h1>
+        <h1>PharmaCare</h1>
       </nav>
       <div className="admin-login-container">
         <h2>Admin Login</h2>

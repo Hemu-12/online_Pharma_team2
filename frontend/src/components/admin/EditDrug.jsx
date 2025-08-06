@@ -41,7 +41,7 @@ const EditDrug = () => {
   return (
     <>
       <nav className="navbar-edit">
-        <h1>Pharmacy</h1>
+        <h1>PharmaCare</h1>
       </nav>
 
       <div className="edit-drug-form-container animate">

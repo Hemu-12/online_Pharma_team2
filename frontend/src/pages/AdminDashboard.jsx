@@ -41,7 +41,7 @@ const AdminDashboard = () => {
   return (
     <div className="admin-dashboard">
       <div className="admin-navbar">
-        <div className="admin-logo">Pharmacy</div>
+        <div className="admin-logo">PharmaCare</div>
 
         <div className="admin-search">
           <FaSearch className="search-icon" />
