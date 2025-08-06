@@ -5,6 +5,8 @@ import {
     faSearch, faUser, faPlus, faTimes,
     faShieldAlt, faShippingFast, faUserMd
 } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
+
 
 const PharmaCatalog = () => {
     const [products, setProducts] = useState([]);
@@ -79,10 +81,12 @@ const PharmaCatalog = () => {
         setFilteredProducts(filtered);
     };
 
-    const showProductDetails = (product) => {
-        setModalProduct(product);
-        setModalVisible(true);
-    };
+   const navigate = useNavigate();
+
+const showProductDetails = (product) => {
+  navigate('/details', { state: { product } });
+};
+
 
     const closeModal = () => {
         setModalVisible(false);
