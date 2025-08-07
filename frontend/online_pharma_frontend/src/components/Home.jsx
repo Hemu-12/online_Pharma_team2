@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { FaShoppingCart, FaUser } from 'react-icons/fa';
 import { MdDarkMode } from 'react-icons/md';
-import '../home/Home.css';
+import './Home.css';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShieldAlt, faShippingFast, faUserMd } from '@fortawesome/free-solid-svg-icons';
 
-function App() {
+function Home() {
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
@@ -28,21 +31,26 @@ function App() {
 const Navbar = ({ toggleDarkMode }) => {
   return (
     <nav className="navbar">
-      <div className="logo">PharmaCare</div>
+      <div className="logo">
+        <img src="/images/logo.jpg" alt="PharmaCare Logo" className="logo-img" />
+        <h1>
+          <span style={{ color: '#2563eb' }}>Pharma</span>
+          <span style={{ color: '#16a34a' }}>Care</span>
+        </h1>
+      </div>
 
       <ul className="nav-links">
-        <li>Home</li>
-        <li>Doctors</li>
-        <li>Catalog</li>
-        <li>About</li>
-        <li>Contact</li>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#doctors">Doctors</a></li>
+        <li><Link to="/catalog">Catalog</Link></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
       </ul>
 
       <div className="nav-icons">
-        <div className="icon-container">
+        <Link to="/cartpage" className="icon-container">
           <FaShoppingCart className="icon" />
-          <span className="cart-badge">3</span>
-        </div>
+        </Link>
 
         <button className="sign-in-btn">
           <FaUser className="icon" />
@@ -58,7 +66,7 @@ const Navbar = ({ toggleDarkMode }) => {
 };
 
 const Hero = () => (
-  <section className="hero">
+  <section className="hero" id="home">
     <div className="hero-content">
       <div className="hero-text">
         <h1>Best Drugstore In Your Reach</h1>
@@ -66,7 +74,7 @@ const Hero = () => (
         <button>Explore Medicines</button>
       </div>
       <div className="hero-image">
-        <img src="/Images/Home_images/pexels-pixabay-139398.jpg" alt="Pharmacy illustration" />
+        <img src="/images/pexels-pixabay-139398.jpg" alt="Pharmacy illustration" />
       </div>
     </div>
   </section>
@@ -74,16 +82,16 @@ const Hero = () => (
 
 const MedicineSlider = () => {
   const medicines = [
-    ['/Images/Home_images/paracetamol.jpeg', 'Paracetamol'],
-    ['/Images/Home_images/cough-syrup.jpeg', 'Cough Syrup'],
-    ['/Images/Home_images/antibiotic.jpeg', 'Antibiotic'],
-    ['/Images/Home_images/vitamins.jpeg', 'Vitamins'],
-    ['/Images/Home_images/skin-cream.jpeg', 'Skin Cream'],
-    ['/Images/Home_images/inhaler.jpeg', 'Inhaler'],
-    ['/Images/Home_images/pain-reilef.jpeg', 'Pain Relief'],
-    ['/Images/Home_images/nasalSpary.jpeg', 'Nasal Spray'],
-    ['/Images/Home_images/allergytable.jpeg', 'Allergy Tablets'],
-    ['/Images/Home_images/multivitamin.jpeg', 'Multivitamins'],
+    ['/images/paracetamol.jpeg', 'Paracetamol'],
+    ['/images/cough-syrup.jpeg', 'Cough Syrup'],
+    ['/images/antibiotic.jpeg', 'Antibiotic'],
+    ['/images/vitamins.jpeg', 'Vitamins'],
+    ['/images/skin-cream.jpeg', 'Skin Cream'],
+    ['/images/inhaler.jpeg', 'Inhaler'],
+    ['/images/pain-reilef.jpeg', 'Pain Relief'],
+    ['/images/nasalSpary.jpeg', 'Nasal Spray'],
+    ['/images/allergytable.jpeg', 'Allergy Tablets'],
+    ['/images/multivitamin.jpeg', 'Multivitamins'],
   ];
 
   return (
@@ -103,21 +111,21 @@ const MedicineSlider = () => {
 
 const DoctorSlider = () => {
   const doctors = [
-    ['Dr. Sharma', '/Images/Home_images/femaledoctor.jpeg'],
-    ['Dr. Verma', '/Images/Home_images/maleDoctor.jpeg'],
-    ['Dr. Khan', '/Images/Home_images/maleDoctor.jpeg'],
-    ['Dr. Iyer', '/Images/Home_images/femaledoctor.jpeg'],
-    ['Dr. Rao', '/Images/Home_images/maleDoctor.jpeg'],
-    ['Dr. Gupta', '/Images/Home_images/femaledoctor.jpeg'],
-    ['Dr. Patel', '/Images/Home_images/maleDoctor.jpeg'],
-    ['Dr. Joshi', '/Images/Home_images/maleDoctor.jpeg'],
-    ['Dr. Roy', '/Images/Home_images/maleDoctor.jpeg'],
-    ['Dr. Meena', '/Images/Home_images/femaledoctor.jpeg'],
-    ['Dr. Radhika', '/Images/Home_images/maleDoctor.jpeg'],
+    ['Dr. Sharma', '/images/femaledoctor.jpeg'],
+    ['Dr. Verma', '/images/maleDoctor.jpeg'],
+    ['Dr. Khan', '/images/maleDoctor.jpeg'],
+    ['Dr. Iyer', '/images/femaledoctor.jpeg'],
+    ['Dr. Rao', '/images/maleDoctor.jpeg'],
+    ['Dr. Gupta', '/images/femaledoctor.jpeg'],
+    ['Dr. Patel', '/images/maleDoctor.jpeg'],
+    ['Dr. Joshi', '/images/maleDoctor.jpeg'],
+    ['Dr. Roy', '/images/maleDoctor.jpeg'],
+    ['Dr. Meena', '/images/femaledoctor.jpeg'],
+    ['Dr. Radhika', '/images/maleDoctor.jpeg'],
   ];
 
   return (
-    <section className="slider-section">
+    <section className="slider-section" id="doctors">
       <h2>Top Drug Experts</h2>
       <div className="slider-container">
         {doctors.map(([name, src], i) => (
@@ -141,7 +149,7 @@ const DoctorSlider = () => {
 };
 
 const Services = () => (
-  <section className="services">
+  <section className="services" id="about">
     <h2>Our Services</h2>
     <div className="cards">
       {['Search Medicines', 'Upload Prescription', 'Talk to Drug Expert', 'Order COVID Essentials'].map(
@@ -173,7 +181,7 @@ const Testimonials = () => (
 );
 
 const Contact = () => (
-  <section className="contact">
+  <section className="contact" id="contact">
     <h2>Contact Us</h2>
     <form>
       <input type="text" placeholder="Your Name" required />
@@ -207,37 +215,49 @@ function ScrollToTop() {
 const Footer = () => (
   <footer className="footer">
     <div className="footer-content">
-      <div className="footer-section">
-        <h3>PharmaCare</h3>
-        <p>Your trusted pharmacy partner for safe and fast delivery.</p>
+      <div className="footer-col">
+        <div className="logo-area">
+          <h1 className="brand-title">
+            Pharma<span className="highlight">Care</span>
+          </h1>
+        </div>
+        <p>Your trusted partner for pharmaceutical needs. Providing quality medications with care since 2010.</p>
       </div>
 
-      <div className="footer-section">
+      <div className="footer-col">
         <h4>Quick Links</h4>
         <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Doctors</a></li>
-          <li><a href="#">Medicines</a></li>
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Contact</a></li>
+          <li>Home</li>
+          <li>All Medications</li>
+          <li>Prescription Refills</li>
+          <li>Health Blog</li>
         </ul>
       </div>
 
-      <div className="footer-section">
-        <h4>Contact</h4>
-        <p>Email: <a href="mailto:support@pharmacare.com">support@pharmacare.com</a></p>
-        <p>Phone: +91-999-888-7777</p>
-        <div className="socials">
-          <a href="#">Instagram</a> | <a href="#">Twitter</a> | <a href="#">LinkedIn</a>
-        </div>
+      <div className="footer-col">
+        <h4>Information</h4>
+        <ul>
+          <li>About Us</li>
+          <li>Privacy Policy</li>
+          <li>Terms of Service</li>
+          <li>Shipping Policy</li>
+        </ul>
+      </div>
+
+      <div className="footer-col">
+        <h4>Contact Us</h4>
+        <ul>
+          <li><FontAwesomeIcon icon={faShieldAlt} /> 123 Medical Ave</li>
+          <li><FontAwesomeIcon icon={faShippingFast} /> (800) 555-HEAL</li>
+          <li><FontAwesomeIcon icon={faUserMd} /> support@pharmacare.com</li>
+        </ul>
       </div>
     </div>
 
     <div className="footer-bottom">
-      &copy; {new Date().getFullYear()} PharmaCare. All rights reserved.
+      <p>© 2023 PharmaCare. All rights reserved.</p>
     </div>
   </footer>
 );
 
-
-export default App;
+export default Home;

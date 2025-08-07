@@ -141,7 +141,7 @@ const OrderHistory = () => {
     <div className="ohx-order-history-container">
       <div className="ohx-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1>Your Order History</h1>
-        <Link to="/" className="ohx-home-link">Home</Link>
+        <Link to="/home" className="ohx-home-link">Home</Link>
       </div>
 
       <div className="ohx-order-list">

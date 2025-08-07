@@ -7,6 +7,7 @@ import OrderHistory from './components/OrderHistory';
 import CartPage from './components/CartPage';
 import Details from './components/Details';
 import Navbar from './components/Navbar';
+import Home from './components/Home';
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
           <Route path="/cartpage" element={<CartPage />} />
           <Route path="/details" element={<Details />} /> {/* fixed route path */}
           <Route path="/navbar" element={<Navbar />} />
+          <Route path="/home" element={<Home/>} />
         </Routes>
       </div>
     </Router>

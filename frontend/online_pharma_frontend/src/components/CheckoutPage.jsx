@@ -1,13 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './CheckoutPage.css';
 import { Link } from 'react-router-dom';
 
 const CheckoutPage = () => {
-    const [items, setItems] = useState([
-        { id: 101, name: 'Paracetamol 500mg', price: 20.0, quantity: 1, image: '/images/paracetamol.jpg' },
-        { id: 102, name: 'Amoxicillin 250mg', price: 50.0, quantity: 1, image: '/images/amoxicillin.jpg' }
-    ]);
-
+    const [items, setItems] = useState([]);
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -24,16 +20,26 @@ const CheckoutPage = () => {
     const [discount, setDiscount] = useState(0);
     const [loading, setLoading] = useState(false);
 
+    useEffect(() => {
+        const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+        setItems(storedCart);
+    }, []);
+
+    const updateStorage = (updatedItems) => {
+        setItems(updatedItems);
+        localStorage.setItem('cart', JSON.stringify(updatedItems));
+    };
+
     const updateQuantity = (id, delta) => {
-        setItems(prevItems =>
-            prevItems.map(item =>
-                item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item
-            )
+        const updated = items.map(item =>
+            item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item
         );
+        updateStorage(updated);
     };
 
     const removeItem = (id) => {
-        setItems(prevItems => prevItems.filter(item => item.id !== id));
+        const updated = items.filter(item => item.id !== id);
+        updateStorage(updated);
     };
 
     const handleInputChange = (e) => {
@@ -42,7 +48,13 @@ const CheckoutPage = () => {
         setErrors(prev => ({ ...prev, [name]: '' }));
     };
 
-    const subtotal = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    
+    const subtotal = items.reduce((acc, item) => {
+        const price = parseFloat(item.price) || 0;
+        const qty = parseInt(item.quantity) || 1;
+        return acc + price * qty;
+    }, 0);
+
     const tax = (subtotal - discount) * 0.075;
     const total = subtotal - discount + tax;
 
@@ -110,10 +122,10 @@ const CheckoutPage = () => {
             currency: 'INR',
             name: 'PharmaCare',
             description: 'Medicine Purchase',
-            image: '/logo.png',
+            image: '/images/logo.jpg',
             handler: function (response) {
                 alert('✅ Payment Successful! Payment ID: ' + response.razorpay_payment_id);
-                setItems([]);
+                updateStorage([]);
                 setDiscount(0);
                 setPromoCode('');
                 setLoading(false);
@@ -141,21 +153,21 @@ const CheckoutPage = () => {
 
     return (
         <div className="checkout-page">
+            {/* --- Header --- */}
             <header className="pharmacheckout-header">
                 <div className="pharmacheckout-header-container">
                     <div className="pharmacheckout-site-title">
-                        <h1>
-                            <span style={{ color: '#2563eb', fontWeight: 'bold' }}>Pharma</span>
-                            <span style={{ color: '#16a34a', fontWeight: 'bold' }}>Care</span>
-                        </h1>
+                        <h1><span style={{ color: '#2563eb' }}>Pharma</span><span style={{ color: '#16a34a' }}>Care</span></h1>
                     </div>
                     <div className="pharmacheckout-home-link">
-                        <Link to="/">Home</Link>
+                        <Link to="/cartpage">Back</Link>
                     </div>
                 </div>
             </header>
 
+            {/* --- Main Content --- */}
             <main className="pharmacheckout-main-content">
+                {/* Cart Section */}
                 <section className="pharmacheckout-order-section">
                     <div className="pharmacheckout-card">
                         <h2><i className="fas fa-pills"></i> Your Medications</h2>
@@ -168,7 +180,7 @@ const CheckoutPage = () => {
                                     <div className="pharmacheckout-item-info">
                                         <div className="pharmacheckout-item-header">
                                             <h3>{item.name}</h3>
-                                            <span>₹{item.price.toFixed(2)}</span>
+                                            <span>₹{parseFloat(item.price).toFixed(2)}</span>
                                         </div>
                                         <p>30 tablets | Prescription Medicine</p>
                                         <div className="pharmacheckout-item-footer">
@@ -186,7 +198,7 @@ const CheckoutPage = () => {
                             ))
                         )}
                     </div>
-
+ {/* Shipping Form */}
                     <div className="pharmacheckout-card">
                         <h2><i className="fas fa-truck"></i> Shipping Information</h2>
                         <form onSubmit={handleShippingSubmit} noValidate>
@@ -255,12 +267,24 @@ const CheckoutPage = () => {
                     </div>
                 </section>
 
+
+
+                {/* Order Summary Section */}
                 <aside className="pharmacheckout-summary-section">
                     <div className="pharmacheckout-card">
                         <h2><i className="fas fa-receipt"></i> Order Summary</h2>
-                        <div className="pharmacheckout-summary-item"><span>Subtotal ({items.length} items)</span><span>₹{subtotal.toFixed(2)}</span></div>
-                        <div className="pharmacheckout-summary-item"><span>Discount</span><span>- ₹{discount.toFixed(2)}</span></div>
-                        <div className="pharmacheckout-summary-item"><span>Tax</span><span>₹{tax.toFixed(2)}</span></div>
+                        <div className="pharmacheckout-summary-item">
+                            <span>Subtotal ({items.length} items)</span>
+                            <span>₹{subtotal.toFixed(2)}</span>
+                        </div>
+                        <div className="pharmacheckout-summary-item">
+                            <span>Discount</span>
+                            <span>- ₹{discount.toFixed(2)}</span>
+                        </div>
+                        <div className="pharmacheckout-summary-item">
+                            <span>Tax</span>
+                            <span>₹{tax.toFixed(2)}</span>
+                        </div>
                         <div className="pharmacheckout-coupon-row">
                             <input type="text" placeholder="Promo code" value={promoCode} onChange={(e) => setPromoCode(e.target.value)} className="pharmacheckout-coupon-input" />
                             <button className="pharmacheckout-apply-btn" onClick={applyPromoCode}>Apply</button>
@@ -272,8 +296,12 @@ const CheckoutPage = () => {
                         <button className="pharmacheckout-checkout-btn" onClick={handlePayment} disabled={loading}>
                             <i className="fas fa-lock"></i> {loading ? 'Processing...' : 'Complete Secure Payment'}
                         </button>
-                        <p className="pharmacheckout-terms">By completing your purchase you agree to our <a href="#">Terms of Service</a> and acknowledge our <a href="#">Privacy Policy</a>.</p>
-                        <div className="pharmacheckout-support"><i className="fas fa-headset"></i> Need help? <a href="#">Contact Support</a></div>
+                        <p className="pharmacheckout-terms">
+                            By completing your purchase you agree to our <a href="#">Terms of Service</a> and acknowledge our <a href="#">Privacy Policy</a>.
+                        </p>
+                        <div className="pharmacheckout-support">
+                            <i className="fas fa-headset"></i> Need help? <a href="#">Contact Support</a>
+                        </div>
                     </div>
                 </aside>
             </main>
