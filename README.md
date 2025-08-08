@@ -35,6 +35,21 @@ Build an **Online Pharmacy Portal** that enables:
 </table>
 
 ---
+## 📸 Project Preview
+
+### 🏠 Home Page
+![Home Page](https://res.cloudinary.com/dqyaisewt/image/upload/v1754623614/Screenshot_2025-08-08_084622_fp2qso.png)
+
+### 💊 Catalogue / Products
+![Catalogue](https://res.cloudinary.com/dqyaisewt/image/upload/v1754623615/Screenshot_2025-08-08_085006_kjjse1.png)
+
+### 🛒 Your Cart
+![Your Cart](https://res.cloudinary.com/dqyaisewt/image/upload/v1754623615/Screenshot_2025-08-08_085218_tghxsc.png)
+
+### 📜 Order History
+![Order History](https://res.cloudinary.com/dqyaisewt/image/upload/v1754623611/Screenshot_2025-08-08_085426_f0n3xv.png)
+
+---
 
 ## 🚀 Features Roadmap
 
@@ -107,8 +122,8 @@ All APIs tested via Postman including:
 
 ## 👨‍💻 Contributors
 
-- Vaishnavi Sinde  
-- Hemanshi  
+- Vaishnavi Shinde
+- Hemanshi Mahajan 
 - Sneha Mandan  
 - Shubham Patil  
 - Shradha Missal  
