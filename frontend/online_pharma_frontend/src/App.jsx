@@ -8,6 +8,9 @@ import CartPage from './components/CartPage';
 import Details from './components/Details';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
+import AdminLoginPage from './components/AdminLoginPage';
+
+
 
 const App = () => {
   return (
@@ -22,6 +25,9 @@ const App = () => {
           <Route path="/details" element={<Details />} /> {/* fixed route path */}
           <Route path="/navbar" element={<Navbar />} />
           <Route path="/home" element={<Home/>} />
+          {/* for admin */}
+          <Route path="/admin-login" element={<AdminLoginPage />} />
+
         </Routes>
       </div>
     </Router>
