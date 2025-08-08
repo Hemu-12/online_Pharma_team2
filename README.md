@@ -37,8 +37,6 @@ Build an **Online Pharmacy Portal** that enables:
 ---
 ## 📸 Project Preview
 
-> Paste your direct image links (Cloudinary or hosted links) in the DIRECT_LINK_* placeholders below.
-
 ### 🏠 Home Page
 ![Home Page](https://res.cloudinary.com/dqyaisewt/image/upload/v1754623614/Screenshot_2025-08-08_084622_fp2qso.png)
 
@@ -124,8 +122,8 @@ All APIs tested via Postman including:
 
 ## 👨‍💻 Contributors
 
-- Vaishnavi Sinde  
-- Hemanshi  
+- Vaishnavi Shinde
+- Hemanshi Mahajan 
 - Sneha Mandan  
 - Shubham Patil  
 - Shradha Missal  
