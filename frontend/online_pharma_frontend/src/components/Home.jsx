@@ -52,6 +52,13 @@ const Navbar = ({ toggleDarkMode }) => {
           <FaShoppingCart className="icon" />
         </Link>
 
+        {*/admin login*/}
+        <Link to="/admin-login" className="sign-in-btn">
+          <FaUser className="icon" />
+          <span>Sign In</span>
+        </Link>
+
+
         <button className="sign-in-btn">
           <FaUser className="icon" />
           <span>Sign In</span>
