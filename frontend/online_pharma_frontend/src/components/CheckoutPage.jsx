@@ -20,18 +20,30 @@ const CheckoutPage = () => {
     const [discount, setDiscount] = useState(0);
     const [loading, setLoading] = useState(false);
 
+    // ✅ Load cart from localStorage
+    useEffect(() => {
+        const storedItems = JSON.parse(localStorage.getItem('cart')) || [];
+        const withQuantity = storedItems.map(item => ({
+            ...item,
+            quantity: item.quantity || 1
+        }));
+        setItems(withQuantity);
+    }, []);
+
+    // ✅ Update quantity
     const updateQuantity = (id, delta) => {
-        setItems(prevItems =>
-            prevItems.map(item =>
-                item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item
-            )
+        const updated = items.map(item =>
+            item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item
         );
-        updateStorage(updated);
+        setItems(updated);
+        localStorage.setItem('cart', JSON.stringify(updated));
     };
 
+    // ✅ Remove item
     const removeItem = (id) => {
         const updated = items.filter(item => item.id !== id);
-        updateStorage(updated);
+        setItems(updated);
+        localStorage.setItem('cart', JSON.stringify(updated));
     };
 
     const handleInputChange = (e) => {
@@ -114,6 +126,7 @@ const CheckoutPage = () => {
                 setItems([]);
                 setDiscount(0);
                 setPromoCode('');
+                localStorage.removeItem('cart'); // ✅ Clear cart after payment
                 setLoading(false);
             },
             prefill: {
@@ -135,7 +148,7 @@ const CheckoutPage = () => {
             setLoading(false);
             alert('❌ Payment Failed');
         });
-    };
+    }
 
     return (
         <div className="checkout-page">

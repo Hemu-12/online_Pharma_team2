@@ -54,8 +54,9 @@ const Navbar = ({ toggleDarkMode }) => {
 
         <button className="sign-in-btn">
           <FaUser className="icon" />
-          <span>Sign In</span>
-        </button>
+          <span>Sign In </span>
+      </button>
+
 
         <button className="dark-mode-toggle" onClick={toggleDarkMode} aria-label="Toggle dark mode">
           <MdDarkMode className="icon" />
