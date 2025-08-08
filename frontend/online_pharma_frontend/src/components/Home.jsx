@@ -51,14 +51,11 @@ const Navbar = ({ toggleDarkMode }) => {
         <Link to="/cartpage" className="icon-container">
           <FaShoppingCart className="icon" />
         </Link>
-         {/*admin code chaged here*/}
-        <button
-          className="sign-in-btn"
-          onClick={() => navigate('/admin-login')}
-        >
+
+        <button className="sign-in-btn">
           <FaUser className="icon" />
-          <span>Sign In</span>
-        </button>
+          <span>Sign In </span>
+      </button>
 
 
         <button className="dark-mode-toggle" onClick={toggleDarkMode} aria-label="Toggle dark mode">
