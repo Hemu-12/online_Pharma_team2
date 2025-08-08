@@ -20,19 +20,11 @@ const CheckoutPage = () => {
     const [discount, setDiscount] = useState(0);
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
-        setItems(storedCart);
-    }, []);
-
-    const updateStorage = (updatedItems) => {
-        setItems(updatedItems);
-        localStorage.setItem('cart', JSON.stringify(updatedItems));
-    };
-
     const updateQuantity = (id, delta) => {
-        const updated = items.map(item =>
-            item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item
+        setItems(prevItems =>
+            prevItems.map(item =>
+                item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item
+            )
         );
         updateStorage(updated);
     };
@@ -48,13 +40,7 @@ const CheckoutPage = () => {
         setErrors(prev => ({ ...prev, [name]: '' }));
     };
 
-    
-    const subtotal = items.reduce((acc, item) => {
-        const price = parseFloat(item.price) || 0;
-        const qty = parseInt(item.quantity) || 1;
-        return acc + price * qty;
-    }, 0);
-
+    const subtotal = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const tax = (subtotal - discount) * 0.075;
     const total = subtotal - discount + tax;
 
@@ -122,10 +108,10 @@ const CheckoutPage = () => {
             currency: 'INR',
             name: 'PharmaCare',
             description: 'Medicine Purchase',
-            image: '/images/logo.jpg',
+            image: '/logo.png',
             handler: function (response) {
                 alert('✅ Payment Successful! Payment ID: ' + response.razorpay_payment_id);
-                updateStorage([]);
+                setItems([]);
                 setDiscount(0);
                 setPromoCode('');
                 setLoading(false);
@@ -180,7 +166,7 @@ const CheckoutPage = () => {
                                     <div className="pharmacheckout-item-info">
                                         <div className="pharmacheckout-item-header">
                                             <h3>{item.name}</h3>
-                                            <span>₹{parseFloat(item.price).toFixed(2)}</span>
+                                            <span>₹{item.price.toFixed(2)}</span>
                                         </div>
                                         <p>30 tablets | Prescription Medicine</p>
                                         <div className="pharmacheckout-item-footer">
@@ -273,18 +259,9 @@ const CheckoutPage = () => {
                 <aside className="pharmacheckout-summary-section">
                     <div className="pharmacheckout-card">
                         <h2><i className="fas fa-receipt"></i> Order Summary</h2>
-                        <div className="pharmacheckout-summary-item">
-                            <span>Subtotal ({items.length} items)</span>
-                            <span>₹{subtotal.toFixed(2)}</span>
-                        </div>
-                        <div className="pharmacheckout-summary-item">
-                            <span>Discount</span>
-                            <span>- ₹{discount.toFixed(2)}</span>
-                        </div>
-                        <div className="pharmacheckout-summary-item">
-                            <span>Tax</span>
-                            <span>₹{tax.toFixed(2)}</span>
-                        </div>
+                        <div className="pharmacheckout-summary-item"><span>Subtotal ({items.length} items)</span><span>₹{subtotal.toFixed(2)}</span></div>
+                        <div className="pharmacheckout-summary-item"><span>Discount</span><span>- ₹{discount.toFixed(2)}</span></div>
+                        <div className="pharmacheckout-summary-item"><span>Tax</span><span>₹{tax.toFixed(2)}</span></div>
                         <div className="pharmacheckout-coupon-row">
                             <input type="text" placeholder="Promo code" value={promoCode} onChange={(e) => setPromoCode(e.target.value)} className="pharmacheckout-coupon-input" />
                             <button className="pharmacheckout-apply-btn" onClick={applyPromoCode}>Apply</button>
@@ -296,12 +273,8 @@ const CheckoutPage = () => {
                         <button className="pharmacheckout-checkout-btn" onClick={handlePayment} disabled={loading}>
                             <i className="fas fa-lock"></i> {loading ? 'Processing...' : 'Complete Secure Payment'}
                         </button>
-                        <p className="pharmacheckout-terms">
-                            By completing your purchase you agree to our <a href="#">Terms of Service</a> and acknowledge our <a href="#">Privacy Policy</a>.
-                        </p>
-                        <div className="pharmacheckout-support">
-                            <i className="fas fa-headset"></i> Need help? <a href="#">Contact Support</a>
-                        </div>
+                        <p className="pharmacheckout-terms">By completing your purchase you agree to our <a href="#">Terms of Service</a> and acknowledge our <a href="#">Privacy Policy</a>.</p>
+                        <div className="pharmacheckout-support"><i className="fas fa-headset"></i> Need help? <a href="#">Contact Support</a></div>
                     </div>
                 </aside>
             </main>
