@@ -38,16 +38,16 @@ Build an **Online Pharmacy Portal** that enables:
 ## 📸 Project Preview
 
 ### 🏠 Home Page
-![Home Page](https://res.cloudinary.com/your-cloud-name/image/upload/v1234567890/home_page.png)
+![Home Page](https://res.cloudinary.com/dqyaisewt/image/upload/v1754623614/Screenshot_2025-08-08_084622_fp2qso.png)
 
 ### 💊 Catalogue / Products
-![Catalogue](https://res.cloudinary.com/your-cloud-name/image/upload/v1234567890/catalogue.png)
+![Catalogue](https://res.cloudinary.com/dqyaisewt/image/upload/v1754623615/Screenshot_2025-08-08_085006_kjjse1.png)
 
 ### 🛒 Your Cart
-![Your Cart](https://res.cloudinary.com/your-cloud-name/image/upload/v1234567890/cart.png)
+![Your Cart](https://res.cloudinary.com/dqyaisewt/image/upload/v1754623615/Screenshot_2025-08-08_085218_tghxsc.png)
 
 ### 📜 Order History
-![Order History](https://res.cloudinary.com/your-cloud-name/image/upload/v1234567890/order_history.png)
+![Order History](https://res.cloudinary.com/dqyaisewt/image/upload/v1754623612/Screenshot_2025-08-08_085316_cze8by.png)
 
 ### 🔐 Login Page
 ![Login Page](https://res.cloudinary.com/dqyaisewt/image/upload/v1754643895/IMG-20250805-WA0002_xncrtz.jpg)
