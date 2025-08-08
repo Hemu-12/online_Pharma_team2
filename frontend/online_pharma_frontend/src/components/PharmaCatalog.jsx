@@ -4,7 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faSearch, faUser, faPlus, faTimes,
     faShieldAlt, faShippingFast, faUserMd
-} from '@fortawesome/free-solid-svg-icons';
+} 
+from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
