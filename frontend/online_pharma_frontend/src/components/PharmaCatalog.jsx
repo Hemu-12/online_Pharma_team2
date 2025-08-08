@@ -5,6 +5,7 @@ import {
     faSearch, faUser, faPlus, faTimes,
     faShieldAlt, faShippingFast, faUserMd
 } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
 
 const PharmaCatalog = () => {
     const [products, setProducts] = useState([]);
@@ -15,8 +16,7 @@ const PharmaCatalog = () => {
     const [modalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
-        const productData = [
-            { name: 'Paracetamol', dosage: '500mg Tablets', description: 'Paracetamol', price: 20, stock: 'In Stock', image: '/images/paracetamol.jpg', category: 'Pain Relief' },
+        const productData = [ { name: 'Paracetamol', dosage: '500mg Tablets', description: 'Paracetamol', price: 20, stock: 'In Stock', image: '/images/paracetamol.jpg', category: 'Pain Relief' },
             { name: 'Ibuprofen', dosage: '200mg Tablets', description: 'Ibuprofen', price: 30, stock: 'In Stock', image: '/images/Ibuprofen.jpg', category: 'Pain Relief' },
             { name: 'Aspirin', dosage: '300mg Tablets', description: 'Aspirin', price: 25, stock: 'In Stock', image: '/images/Aspirin.jpg', category: 'Pain Relief' },
             { name: 'Naproxen', dosage: '250mg Tablets', description: 'Naproxen', price: 40, stock: 'In Stock', image: '/images/Naproxen.jpg', category: 'Pain Relief' },
@@ -44,8 +44,7 @@ const PharmaCatalog = () => {
             { name: 'Phenylephrine', dosage: '10mg Tablets', description: 'Phenylephrine', price: 22, stock: 'In Stock', image: '/images/Phenylephrine.jpg', category: 'Cold & Flu' },
             { name: 'Chlorpheniramine', dosage: '4mg Tablets', description: 'Chlorpheniramine', price: 25, stock: 'In Stock', image: '/images/Chlorpheniramine.jpg', category: 'Cold & Flu' },
             { name: 'Guaifenesin', dosage: '100mg Tablets', description: 'Guaifenesin', price: 33, stock: 'In Stock', image: '/images/Guaifenesin.jpg', category: 'Cold & Flu' },
-            { name: 'Dextromethorphan', dosage: '15mg Tablets', description: 'Dextromethorphan', price: 29, stock: 'In Stock', image: '/images/Dextromethorphan.jpg', category: 'Cold & Flu' },
-        ];
+            { name: 'Dextromethorphan', dosage: '15mg Tablets', description: 'Dextromethorphan', price: 29, stock: 'In Stock', image: '/images/Dextromethorphan.jpg', category: 'Cold & Flu' }, ];
 
         const withIdAndPricing = productData.map((p, index) => ({
             ...p,
@@ -79,9 +78,10 @@ const PharmaCatalog = () => {
         setFilteredProducts(filtered);
     };
 
+    const navigate = useNavigate();
+
     const showProductDetails = (product) => {
-        setModalProduct(product);
-        setModalVisible(true);
+        navigate('/details', { state: { product } });
     };
 
     const closeModal = () => {
@@ -106,16 +106,22 @@ const PharmaCatalog = () => {
             <nav className="pharmacatalog-navbar">
                 <div className="pharmacatalog-navbar-container">
                     <div className="pharmacatalog-navbar-logo">
+                        <img src="/images/logo.jpg" alt="PharmaCare Logo" className="pharmacatalog-logo-img" />
                         <h1 className="pharmacatalog-brand-title">Pharma<span className="pharmacatalog-highlight">Care</span></h1>
                     </div>
                     <div className="pharmacatalog-navbar-links">
-                        <a href="#home">Home</a>
+                        <a href="/home">Home</a>
                         <a href="#products">Products</a>
                         <a href="#categories">Categories</a>
                         <a href="#about">About</a>
                     </div>
                     <div className="pharmacatalog-navbar-search">
-                        <input type="text" placeholder="Search medicines..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+                        <input
+                            type="text"
+                            placeholder="Search medicines..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
                     </div>
                 </div>
             </nav>
@@ -205,6 +211,7 @@ const PharmaCatalog = () => {
                             <li>Privacy Policy</li>
                             <li>Terms of Service</li>
                             <li>Shipping Policy</li>
+                            
                         </ul>
                     </div>
                     <div className="pharmacatalog-footer-col">

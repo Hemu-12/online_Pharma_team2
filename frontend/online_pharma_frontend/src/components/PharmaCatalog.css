@@ -23,6 +23,19 @@ body {
     align-items: center;
 }
 
+.pharmacatalog-navbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pharmacatalog-logo-img {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+}
+
+
 .pharmacatalog-brand-title {
   font-size: 24px;
   font-weight: bold;

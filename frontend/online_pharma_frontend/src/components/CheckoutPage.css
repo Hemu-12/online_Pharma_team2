@@ -1,5 +1,3 @@
-
-
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 body {
@@ -30,6 +28,7 @@ body {
   display: flex;
   align-items: center;
 }
+
 
 .pharmacheckout-badge {
   background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
@@ -147,9 +146,6 @@ body {
     position: sticky;
     top: 1rem;
   }
-}
-.pharmacheckout-form-group.full-width {
-  flex: 1 1 100%;
 }
 
 .pharmacheckout-card {
@@ -401,4 +397,7 @@ select:focus {
 
 .pharmacheckout-half-width {
   flex: 0 0 48%;
-}
+}  
+.pharmacheckout-form-group.full-width {
+  flex: 1 1 100%;
+}     
