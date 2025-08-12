@@ -138,7 +138,7 @@ All APIs tested via Postman including:
 - Sneha Mandan  
 - Shubham Patil  
 - Shradha Missal  
-- Shubham Gaytadkar  
+- Shubham Ghaytadkar  
 
 ---
 
