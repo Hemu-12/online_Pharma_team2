@@ -7,6 +7,7 @@ const Details = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const product = location.state?.product;
+ 
 
   if (!product) {
     return (

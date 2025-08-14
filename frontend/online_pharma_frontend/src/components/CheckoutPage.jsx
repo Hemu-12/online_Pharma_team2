@@ -1,13 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './CheckoutPage.css';
 import { Link } from 'react-router-dom';
 
 const CheckoutPage = () => {
-    const [items, setItems] = useState([
-        { id: 101, name: 'Paracetamol 500mg', price: 20.0, quantity: 1, image: '/images/paracetamol.jpg' },
-        { id: 102, name: 'Amoxicillin 250mg', price: 50.0, quantity: 1, image: '/images/amoxicillin.jpg' }
-    ]);
-
+    const [items, setItems] = useState([]);
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -24,16 +20,30 @@ const CheckoutPage = () => {
     const [discount, setDiscount] = useState(0);
     const [loading, setLoading] = useState(false);
 
+    // ✅ Load cart from localStorage
+    useEffect(() => {
+        const storedItems = JSON.parse(localStorage.getItem('cart')) || [];
+        const withQuantity = storedItems.map(item => ({
+            ...item,
+            quantity: item.quantity || 1
+        }));
+        setItems(withQuantity);
+    }, []);
+
+    // ✅ Update quantity
     const updateQuantity = (id, delta) => {
-        setItems(prevItems =>
-            prevItems.map(item =>
-                item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item
-            )
+        const updated = items.map(item =>
+            item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item
         );
+        setItems(updated);
+        localStorage.setItem('cart', JSON.stringify(updated));
     };
 
+    // ✅ Remove item
     const removeItem = (id) => {
-        setItems(prevItems => prevItems.filter(item => item.id !== id));
+        const updated = items.filter(item => item.id !== id);
+        setItems(updated);
+        localStorage.setItem('cart', JSON.stringify(updated));
     };
 
     const handleInputChange = (e) => {
@@ -116,6 +126,7 @@ const CheckoutPage = () => {
                 setItems([]);
                 setDiscount(0);
                 setPromoCode('');
+                localStorage.removeItem('cart'); // ✅ Clear cart after payment
                 setLoading(false);
             },
             prefill: {
@@ -137,25 +148,25 @@ const CheckoutPage = () => {
             setLoading(false);
             alert('❌ Payment Failed');
         });
-    };
+    }
 
     return (
         <div className="checkout-page">
+            {/* --- Header --- */}
             <header className="pharmacheckout-header">
                 <div className="pharmacheckout-header-container">
                     <div className="pharmacheckout-site-title">
-                        <h1>
-                            <span style={{ color: '#2563eb', fontWeight: 'bold' }}>Pharma</span>
-                            <span style={{ color: '#16a34a', fontWeight: 'bold' }}>Care</span>
-                        </h1>
+                        <h1><span style={{ color: '#2563eb' }}>Pharma</span><span style={{ color: '#16a34a' }}>Care</span></h1>
                     </div>
                     <div className="pharmacheckout-home-link">
-                        <Link to="/">Home</Link>
+                        <Link to="/cartpage">Back</Link>
                     </div>
                 </div>
             </header>
 
+            {/* --- Main Content --- */}
             <main className="pharmacheckout-main-content">
+                {/* Cart Section */}
                 <section className="pharmacheckout-order-section">
                     <div className="pharmacheckout-card">
                         <h2><i className="fas fa-pills"></i> Your Medications</h2>
@@ -186,7 +197,7 @@ const CheckoutPage = () => {
                             ))
                         )}
                     </div>
-
+ {/* Shipping Form */}
                     <div className="pharmacheckout-card">
                         <h2><i className="fas fa-truck"></i> Shipping Information</h2>
                         <form onSubmit={handleShippingSubmit} noValidate>
@@ -255,6 +266,9 @@ const CheckoutPage = () => {
                     </div>
                 </section>
 
+
+
+                {/* Order Summary Section */}
                 <aside className="pharmacheckout-summary-section">
                     <div className="pharmacheckout-card">
                         <h2><i className="fas fa-receipt"></i> Order Summary</h2>

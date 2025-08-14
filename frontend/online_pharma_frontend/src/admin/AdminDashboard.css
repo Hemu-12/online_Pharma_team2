@@ -1,0 +1,134 @@
+/* AdminDashboard.css */
+.admin-dashboard {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #eaf4f4, #dceef2);
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.admin-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 15px;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.admin-logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #01798a;
+}
+
+.admin-search {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 10px;
+  padding: 4px 8px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
+}
+
+.admin-search input {
+  border: none;
+  outline: none;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+
+.search-icon {
+  color: #01798a;
+  margin-right: 5px;
+}
+
+.create-drug-btn {
+  background-color: #01798a;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 500;
+}
+
+.create-drug-btn:hover {
+  background-color: #026b7b;
+}
+
+.drug-card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.drug-card {
+  width: 250px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(12px);
+  position: relative;
+  color: #003c47;
+}
+
+.card-strip {
+  height: 6px;
+  background: #01798a;
+  width: 100%;
+  border-radius: 5px 5px 0 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.drug-card h3 {
+  margin-top: 10px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.drug-card p {
+  font-size: 14px;
+  margin: 10px 0;
+}
+
+.drug-price {
+  font-weight: bold;
+  color: #026b7b;
+  margin-bottom: 10px;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.edit-btn,
+.delete-btn {
+  background-color: #f0f0f0;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+}
+
+.edit-btn:hover {
+  background-color: #ccefff;
+}
+
+.delete-btn:hover {
+  background-color: #ffdada;
+}

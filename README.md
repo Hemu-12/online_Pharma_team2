@@ -35,6 +35,32 @@ Build an **Online Pharmacy Portal** that enables:
 </table>
 
 ---
+## 📸 Project Preview
+
+### 🏠 Home Page
+![Home Page](https://res.cloudinary.com/dqyaisewt/image/upload/v1754623614/Screenshot_2025-08-08_084622_fp2qso.png)
+
+### 💊 Catalogue / Products
+![Catalogue](https://res.cloudinary.com/dqyaisewt/image/upload/v1754623615/Screenshot_2025-08-08_085006_kjjse1.png)
+
+### 🛒 Your Cart
+![Your Cart](https://res.cloudinary.com/dqyaisewt/image/upload/v1754623615/Screenshot_2025-08-08_085218_tghxsc.png)
+
+### 📜 Order History
+![Order History](https://res.cloudinary.com/dqyaisewt/image/upload/v1754623612/Screenshot_2025-08-08_085316_cze8by.png)
+
+### 🔐 Login Page
+![Login Page](https://res.cloudinary.com/dqyaisewt/image/upload/v1754643895/IMG-20250805-WA0002_xncrtz.jpg)
+
+### ✏️ Edit Drug Page
+![Edit Drug](https://res.cloudinary.com/dqyaisewt/image/upload/v1754643897/IMG-20250805-WA0001_nocsjh.jpg)
+
+### ➕ Create Drug Page
+![Create Drug](https://res.cloudinary.com/dqyaisewt/image/upload/v1754643896/IMG-20250805-WA0004_e2bcvz.jpg)
+
+### 🗄 Database View
+![Database](https://res.cloudinary.com/dqyaisewt/image/upload/v1754643898/IMG-20250808-WA0023_syke8t.jpg)
+---
 
 ## 🚀 Features Roadmap
 
@@ -107,12 +133,12 @@ All APIs tested via Postman including:
 
 ## 👨‍💻 Contributors
 
-- Vaishnavi Sinde  
-- Hemanshi  
+- Vaishnavi Shinde
+- Hemanshi Mahajan 
 - Sneha Mandan  
 - Shubham Patil  
 - Shradha Missal  
-- Shubham Gaytadkar  
+- Shubham Ghaytadkar  
 
 ---
 

@@ -1,20 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import './PharmaCatalog.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faSearch, faUser, faPlus, faTimes,
     faShieldAlt, faShippingFast, faUserMd
-} from '@fortawesome/free-solid-svg-icons';
+} 
+from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
 
 const PharmaCatalog = () => {
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('All Medication');
     const [modalProduct, setModalProduct] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const productData = [
@@ -22,27 +26,22 @@ const PharmaCatalog = () => {
             { name: 'Ibuprofen', dosage: '200mg Tablets', description: 'Ibuprofen', price: 30, stock: 'In Stock', image: '/images/Ibuprofen.jpg', category: 'Pain Relief' },
             { name: 'Aspirin', dosage: '300mg Tablets', description: 'Aspirin', price: 25, stock: 'In Stock', image: '/images/Aspirin.jpg', category: 'Pain Relief' },
             { name: 'Naproxen', dosage: '250mg Tablets', description: 'Naproxen', price: 40, stock: 'In Stock', image: '/images/Naproxen.jpg', category: 'Pain Relief' },
-
             { name: 'Amoxicillin', dosage: '500mg Capsules', description: 'Amoxicillin', price: 60, stock: 'In Stock', image: '/images/amoxicillin.jpg', category: 'Antibiotics' },
             { name: 'Ciprofloxacin', dosage: '500mg Tablets', description: 'Ciprofloxacin', price: 55, stock: 'In Stock', image: '/images/Ciprofloxacin.jpg', category: 'Antibiotics' },
             { name: 'Doxycycline', dosage: '100mg Capsules', description: 'Doxycycline', price: 50, stock: 'In Stock', image: '/images/Doxycycline.jpg', category: 'Antibiotics' },
             { name: 'Azithromycin', dosage: '250mg Tablets', description: 'Azithromycin', price: 65, stock: 'In Stock', image: '/images/Azithromycin.jpg', category: 'Antibiotics' },
-
             { name: 'Metformin', dosage: '500mg Tablets', description: 'Metformin', price: 60, stock: 'In Stock', image: '/images/Metformin.jpg', category: 'Diabetes' },
             { name: 'Glipizide', dosage: '5mg Tablets', description: 'Glipizide', price: 75, stock: 'In Stock', image: '/images/Glipizide.jpg', category: 'Diabetes' },
             { name: 'Insulin', dosage: '100 IU/ml Injection', description: 'Insulin', price: 150, stock: 'In Stock', image: '/images/Insulin.jpg', category: 'Diabetes' },
             { name: 'Glyburide', dosage: '2.5mg Tablets', description: 'Glyburide', price: 50, stock: 'In Stock', image: '/images/Glyburide.jpg', category: 'Diabetes' },
-
             { name: 'Atenolol', dosage: '50mg Tablets', description: 'Atenolol', price: 70, stock: 'In Stock', image: '/images/Atenolol.jpg', category: 'Heart Health' },
             { name: 'Lisinopril', dosage: '10mg Tablets', description: 'Lisinopril', price: 65, stock: 'In Stock', image: '/images/Lisinopril.jpg', category: 'Heart Health' },
             { name: 'Atorvastatin', dosage: '10mg Tablets', description: 'Atorvastatin', price: 85, stock: 'In Stock', image: '/images/Atorvastatin.jpg', category: 'Heart Health' },
             { name: 'Clopidogrel', dosage: '75mg Tablets', description: 'Clopidogrel', price: 95, stock: 'In Stock', image: '/images/Clopidogrel.jpg', category: 'Heart Health' },
-
             { name: 'Cetirizine', dosage: '10mg Tablets', description: 'Cetirizine', price: 30, stock: 'In Stock', image: '/images/Cetirizine.jpg', category: 'Allergies' },
             { name: 'Loratadine', dosage: '10mg Tablets', description: 'Loratadine', price: 35, stock: 'In Stock', image: '/images/Loratadine.jpg', category: 'Allergies' },
             { name: 'Fexofenadine', dosage: '120mg Tablets', description: 'Fexofenadine', price: 40, stock: 'In Stock', image: '/images/Fexofenadine.jpg', category: 'Allergies' },
             { name: 'Diphenhydramine', dosage: '25mg Tablets', description: 'Diphenhydramine', price: 28, stock: 'In Stock', image: '/images/Diphenhydramine.jpg', category: 'Allergies' },
-
             { name: 'Phenylephrine', dosage: '10mg Tablets', description: 'Phenylephrine', price: 22, stock: 'In Stock', image: '/images/Phenylephrine.jpg', category: 'Cold & Flu' },
             { name: 'Chlorpheniramine', dosage: '4mg Tablets', description: 'Chlorpheniramine', price: 25, stock: 'In Stock', image: '/images/Chlorpheniramine.jpg', category: 'Cold & Flu' },
             { name: 'Guaifenesin', dosage: '100mg Tablets', description: 'Guaifenesin', price: 33, stock: 'In Stock', image: '/images/Guaifenesin.jpg', category: 'Cold & Flu' },
@@ -52,25 +51,36 @@ const PharmaCatalog = () => {
         const withIdAndPricing = productData.map((p, index) => ({
             ...p,
             id: index + 1,
-            originalPrice: (p.price * 1.2).toFixed(2)
+            originalPrice: (p.price * 1.2).toFixed(2),
         }));
 
         setProducts(withIdAndPricing);
         setFilteredProducts(withIdAndPricing);
     }, []);
 
+    // Debounce search input
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedSearchTerm(searchTerm);
+        }, 300);
+
+        return () => {
+            clearTimeout(handler);
+        };
+    }, [searchTerm]);
+
     useEffect(() => {
         if (products.length > 0) {
             filterProducts();
         }
-    }, [searchTerm, selectedCategory, products]);
+    }, [debouncedSearchTerm, selectedCategory, products]);
 
     const filterProducts = () => {
         const filtered = products.filter(product => {
             const matchesSearch =
-                product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                product.category.toLowerCase().includes(searchTerm.toLowerCase());
+                product.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+                product.description.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+                product.category.toLowerCase().includes(debouncedSearchTerm.toLowerCase());
 
             const matchesCategory =
                 selectedCategory === 'All Medication' || product.category === selectedCategory;
@@ -81,15 +91,15 @@ const PharmaCatalog = () => {
         setFilteredProducts(filtered);
     };
 
-   const navigate = useNavigate();
-
-const showProductDetails = (product) => {
-  navigate('/details', { state: { product } });
-};
-
+    const showProductDetails = (product) => {
+        // Show modal instead of navigating
+        setModalProduct(product);
+        setModalVisible(true);
+    };
 
     const closeModal = () => {
         setModalVisible(false);
+        setModalProduct(null);
     };
 
     const uniqueCategories = ['All Medication', ...Array.from(new Set(products.map(p => p.category)))];
@@ -101,7 +111,7 @@ const showProductDetails = (product) => {
         "Diabetes": "/images/diabetes.jpg",
         "Heart Health": "/images/heart-health.jpg",
         "Allergies": "/images/allergies.jpg",
-        "Cold & Flu": "/images/cold-flu.jpg"
+        "Cold & Flu": "/images/cold-flu.jpg",
     };
 
     return (
@@ -110,16 +120,24 @@ const showProductDetails = (product) => {
             <nav className="pharmacatalog-navbar">
                 <div className="pharmacatalog-navbar-container">
                     <div className="pharmacatalog-navbar-logo">
+                        <img src="/images/logo.jpg" alt="PharmaCare Logo" className="pharmacatalog-logo-img" />
                         <h1 className="pharmacatalog-brand-title">Pharma<span className="pharmacatalog-highlight">Care</span></h1>
                     </div>
                     <div className="pharmacatalog-navbar-links">
-                        <a href="#home">Home</a>
+                        <Link to="/">Home</Link>
                         <a href="#products">Products</a>
                         <a href="#categories">Categories</a>
                         <a href="#about">About</a>
                     </div>
                     <div className="pharmacatalog-navbar-search">
-                        <input type="text" placeholder="Search medicines..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+                        <input
+                            type="text"
+                            placeholder="Search medicines..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            aria-label="Search medicines"
+                        />
+                        <FontAwesomeIcon icon={faSearch} className="search-icon" />
                     </div>
                 </div>
             </nav>
@@ -135,7 +153,10 @@ const showProductDetails = (product) => {
                     </div>
                 </div>
                 <div className="pharmacatalog-hero-image">
-                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/3dd35b2d-b0d9-4b2e-9d58-9beacabf43bc.png" alt="Happy diverse group of people holding medicine packages" />
+                    <img
+                        src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/3dd35b2d-b0d9-4b2e-9d58-9beacabf43bc.png"
+                        alt="Happy diverse group of people holding medicine packages"
+                    />
                 </div>
             </section>
 
@@ -149,6 +170,10 @@ const showProductDetails = (product) => {
                             key={category}
                             className={`pharmacatalog-category-card ${selectedCategory === category ? 'pharmacatalog-category-active' : ''}`}
                             onClick={() => setSelectedCategory(category)}
+                            role="button"
+                            tabIndex={0}
+                            onKeyDown={e => { if (e.key === 'Enter') setSelectedCategory(category); }}
+                            aria-pressed={selectedCategory === category}
                         >
                             <img
                                 src={categoryImages[category] || "/images/categories/default.jpg"}
@@ -167,8 +192,8 @@ const showProductDetails = (product) => {
                 <p>High-quality medicines for all your health needs</p>
                 <div className="pharmacatalog-products-container">
                     {filteredProducts.map(product => (
-                        <div key={product.id} className="pharmacatalog-product-card">
-                            <img src={product.image} alt={product.name} />
+                        <div key={product.id} className="pharmacatalog-product-card" tabIndex={0} aria-label={`${product.name} - ${product.description}`}>
+                            <img src={product.image} alt={product.name} onError={(e) => e.target.src = '/images/default-product.jpg'} />
                             <h3>{product.name}</h3>
                             <p>{product.description}</p>
                             <p className="pharmacatalog-dosage">{product.dosage}</p>
@@ -177,12 +202,35 @@ const showProductDetails = (product) => {
                                 <span className="pharmacatalog-original-price">₹{product.originalPrice}</span>
                                 <span>{product.stock}</span>
                             </div>
-                            <button onClick={() => showProductDetails(product)}>View Details</button>
+                            <button onClick={() => showProductDetails(product)} aria-label={`View details for ${product.name}`}>View Details</button>
                         </div>
                     ))}
                 </div>
-                <button className="pharmacatalog-view-all">View All Products</button>
+                <button
+                    className="pharmacatalog-view-all"
+                    onClick={() => document.getElementById('products').scrollIntoView({ behavior: 'smooth' })}
+                    aria-label="View all products"
+                >
+                    View All Products
+                </button>
             </section>
+
+            {/* Product Detail Modal */}
+            {modalVisible && modalProduct && (
+                <div className="modal-overlay" onClick={closeModal} aria-modal="true" role="dialog" aria-labelledby="modal-title" tabIndex={-1}>
+                    <div className="modal-content" onClick={e => e.stopPropagation()}>
+                        <button className="modal-close-btn" onClick={closeModal} aria-label="Close modal">
+                            <FontAwesomeIcon icon={faTimes} />
+                        </button>
+                        <h2 id="modal-title">{modalProduct.name}</h2>
+                        <img src={modalProduct.image} alt={modalProduct.name} onError={(e) => e.target.src = '/images/default-product.jpg'} />
+                        <p><strong>Description:</strong> {modalProduct.description}</p>
+                        <p><strong>Dosage:</strong> {modalProduct.dosage}</p>
+                        <p><strong>Price:</strong> ₹{modalProduct.price} <span className="pharmacatalog-original-price">₹{modalProduct.originalPrice}</span></p>
+                        <p><strong>Stock:</strong> {modalProduct.stock}</p>
+                    </div>
+                </div>
+            )}
 
             {/* Footer */}
             <footer className="pharmacatalog-footer">
@@ -209,7 +257,6 @@ const showProductDetails = (product) => {
                             <li>Privacy Policy</li>
                             <li>Terms of Service</li>
                             <li>Shipping Policy</li>
-                            
                         </ul>
                     </div>
                     <div className="pharmacatalog-footer-col">
